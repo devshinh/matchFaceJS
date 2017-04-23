@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #leftBox{  }
+    #rightBox{ border-left:1px solid black;  left:50%;  background: red;  }
+    .box{ width:350px; height: 500px; position: absolute;}
+
+    img{ position: absolute; }
+  </style>
+</head>
+<body onload="createFaces()">
+<h1>Cick on smiley in the left box.</h1>
+<div id="leftBox" class="box"></div>
+<div id="rightBox" class="box"></div>
+
+<script>
+
+var leftBox;
+var rightBox;
+var cln;
+
+//document.getElementById("myList2").removeChild();
+var max = 10, min = 2, posTopMax = 400, posLeftMax = 200;
+var noFaces = 5; //Math.floor(Math.random() * max + min);
+
+
+
+leftBox = document.getElementById("leftBox");
+rightBox = document.getElementById("rightBox");
+
+function createFaces(){
+  for(var i = 0; i < noFaces; i++) {
+    var posTop = Math.floor(Math.random() * posTopMax );
+    var posLeft = Math.floor(Math.random() * posLeftMax );
+
+    var smiley = document.createElement("img");
+    smiley.setAttribute("src", "img/smile.png");
+    smiley.setAttribute("width", "50");
+    smiley.style.top = posTop + 'px';
+    smiley.style.left = posLeft + 'px';
+    leftBox.appendChild(smiley);
+
+  }
+
+  leftBoxImages = leftBox.cloneNode(true);
+  leftBoxImages.removeChild(leftBoxImages.lastChild);
+  rightBox.appendChild(leftBoxImages);
+
+
+  theBody = document.getElementsByTagName("body")[0];
+  leftBox.lastChild.onclick = function nextLevel(event){
+    event.stopPropagation();
+    while(leftBox.firstChild){
+      leftBox.removeChild(leftBox.firstChild);
+    }
+
+    while(rightBox.firstChild){
+      rightBox.removeChild(rightBox.firstChild);
+    }
+    noFaces += 5;
+    createFaces();
+  }
+
+  theBody.onclick = function gameOver() {
+    alert("Game Over!");
+    theBody.onclick = null;
+    leftBox.lastChild.onclick = null;
+  };
+
+}
+
+</script>
+
+</body>
+</html>
